@@ -178,27 +178,256 @@ $"To Decimal": #(1 + 1 * calc.pow(2, 1) + 1 * calc.pow(2, 2) + 1 * calc.pow(2, 3
 #base_convert_table(63, 16)
 
 == CONVERTING FLOATING POINT NUMBERS BETWEEN BASES
+
 What are the most and least significant digits in the following numbers:
 
-- a) 441.34
-- b) 0.245
-- c) 234.00
+- a) $441.34$
+  - *Most Significant Digit (MSD)*: The leftmost non-zero digit is $4$ (the first $4$ in $441$).
+  - *Least Significant Digit (LSD)*: The rightmost digit is $4$ (in the fractional part $0.34$).
+
+- b) $0.245$
+  - *Most Significant Digit (MSD)*: The leftmost digit is $0$ (the integer part).
+  - *Least Significant Digit (LSD)*: The rightmost digit is $5$.
+
+- c) $234.00$
+  - *Most Significant Digit (MSD)*: The leftmost digit is $2$.
+  - *Least Significant Digit (LSD)*: The rightmost digit is $0$ (the last $0$ in $0.00$).
+
+---
 
 Convert the following decimal numbers to their hexadecimal equivalents.
 
-- a) 204.125#sub[10]
-- b) 631.25#sub[10]
+- a) $204.125#sub[10]$
+
+*Integer part* ($204$) using repeated division by $16$:
+
+#align(center)[
+  #table(
+    columns: (auto, auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Division*], [*Quotient*], [*Remainder (hex)*],
+    [$204 div 16$], [$12$], [$12 = "C"$],
+    [$12 div 16$], [$0$], [$12 = "C"$],
+  )
+]
+
+Reading the remainders *bottom-up*: $204 = "CC"_(16)$.
+
+*Fractional part* ($0.125$) using repeated multiplication by $16$:
+
+#align(center)[
+  #table(
+    columns: (auto, auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Multiplication*], [*Product*], [*Integer (hex)*],
+    [$0.125 times 16$], [$2.0$], [$2$],
+  )
+]
+
+Since the product is exactly $2.0$, the process terminates. Thus $0.125_(10) = .2_(16)$.
+
+#v(6pt)
+#text(weight: "bold")[Result:] $"CC".2_(16)$
+
+- b) $631.25#sub[10]$
+
+*Integer part* ($631$) using repeated division by $16$:
+
+#align(center)[
+  #table(
+    columns: (auto, auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Division*], [*Quotient*], [*Remainder (hex)*],
+    [$631 div 16$], [$39$], [$7$],
+    [$39 div 16$], [$2$], [$7$],
+    [$2 div 16$], [$0$], [$2$],
+  )
+]
+
+Reading the remainders *bottom-up*: $631 = 277_(16)$.
+
+*Fractional part* ($0.25$) using repeated multiplication by $16$:
+
+#align(center)[
+  #table(
+    columns: (auto, auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Multiplication*], [*Product*], [*Integer (hex)*],
+    [$0.25 times 16$], [$4.0$], [$4$],
+  )
+]
+
+Since the product is exactly $4.0$, the process terminates. Thus $0.25_(10) = .4_(16)$.
+
+#v(6pt)
+#text(weight: "bold")[Result:] $277.4_(16)$
+
+---
 
 Convert the following binary numbers to their hexadecimal equivalents.
 
-- a) 1001.1111#sub[2]
-- b) 110101.011001#sub[2]
-- c) 10100111011011#sub[2]
+- a) $1001.1111#sub[2]$
+
+Group the integer part into 4-bit groups from the *right*, and the fractional part into 4-bit groups from the *left*:
+
+#v(4pt)
+#align(center)[
+  $1001_2 = 9_(16)$
+
+  $.1111_2 = "F"_(16)$
+]
+
+#text(weight: "bold")[Result:] $9."F"_(16)$
+
+- b) $110101.011001#sub[2]$
+
+Group the integer part into 4-bit groups from the *right* (pad with leading zeros if needed):
+
+#v(4pt)
+#align(center)[
+  $110101_2 = 0011\,0101_2$
+
+  $0011_2 = 3_(16)$, $0101_2 = 5_(16)$
+]
+
+Group the fractional part into 4-bit groups from the *left* (pad with trailing zeros if needed):
+
+#v(4pt)
+#align(center)[
+  $.011001_2 = .0110\,0100_2$
+
+  $0110_2 = 6_(16)$, $0100_2 = 4_(16)$
+]
+
+#text(weight: "bold")[Result:] $35.64_(16)$
+
+- c) $10100111011011#sub[2]$
+
+Group the integer part into 4-bit groups from the *right* (pad with leading zeros if needed):
+
+#v(4pt)
+#align(center)[
+  $10100111011011_2 = 0010\,1001\,1101\,1011_2$
+
+  $0010_2 = 2_(16)$, $1001_2 = 9_(16)$, $1101_2 = "D"_(16)$, $1011_2 = "B"_(16)$
+]
+
+#text(weight: "bold")[Result:] $29"DB"_(16)$
+
+---
 
 Convert the following hexadecimal numbers to their binary equivalents.
 
-- a) E#sub[16]
-- b) 1C#sub[16]
-- c) A64#sub[16]
-- d) 1F.C#sub[16]
-- e) 239.4#sub[16]
+- a) $"E"#sub[16]$
+
+Convert each hex digit to its 4-bit binary equivalent:
+
+#v(4pt)
+#align(center)[
+  #table(
+    columns: (auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Hex Digit*], [*Binary*],
+    [$"E"$], [$1110$],
+  )
+]
+
+#text(weight: "bold")[Result:] $1110_2$
+
+- b) $1"C"#sub[16]$
+
+Convert each hex digit to its 4-bit binary equivalent:
+
+#v(4pt)
+#align(center)[
+  #table(
+    columns: (auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Hex Digit*], [*Binary*],
+    [$1$], [$0001$],
+    [$"C"$], [$1100$],
+  )
+]
+
+Combine: $0001\,1100_2$ (leading zeros can be dropped).
+
+#text(weight: "bold")[Result:] $11100_2$
+
+- c) $"A"64#sub[16]$
+
+Convert each hex digit to its 4-bit binary equivalent:
+
+#v(4pt)
+#align(center)[
+  #table(
+    columns: (auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Hex Digit*], [*Binary*],
+    [$"A"$], [$1010$],
+    [$6$], [$0110$],
+    [$4$], [$0100$],
+  )
+]
+
+Combine: $1010\,0110\,0100_2$
+
+#text(weight: "bold")[Result:] $101001100100_2$
+
+- d) $1"F"."C"#sub[16]$
+
+Convert each hex digit to its 4-bit binary equivalent:
+
+#v(4pt)
+#align(center)[
+  #table(
+    columns: (auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Hex Digit*], [*Binary*],
+    [$1$], [$0001$],
+    [$"F"$], [$1111$],
+    [$"C"$ (fractional)], [$1100$],
+  )
+]
+
+Combine integer and fractional parts: $0001\,1111.1100_2$ (leading zeros can be dropped).
+
+#text(weight: "bold")[Result:] $11111.11_2$
+
+- e) $239.4#sub[16]$
+
+Convert each hex digit to its 4-bit binary equivalent:
+
+#v(4pt)
+#align(center)[
+  #table(
+    columns: (auto, auto),
+    align: center + horizon,
+    inset: 6pt,
+    stroke: 0.5pt,
+    [*Hex Digit*], [*Binary*],
+    [$2$], [$0010$],
+    [$3$], [$0011$],
+    [$9$], [$1001$],
+    [$4$ (fractional)], [$0100$],
+  )
+]
+
+Combine integer and fractional parts: $0010\,0011\,1001.0100_2$ (leading zeros can be dropped).
+
+#text(weight: "bold")[Result:] $1000111001.01_2$
