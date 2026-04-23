@@ -104,3 +104,9 @@ decimal.
   + 1101₂ = 13
   + .01₂ = 0.25
   + So the answer is 13.25
+
+== Finite State Machines
+
+- An abstract machine that can be in exactly one of a finite number of states at
+  any given time. A state simply describes the status of a system at a
+  particular moment.
