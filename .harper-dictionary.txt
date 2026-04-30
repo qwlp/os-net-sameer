@@ -1,3 +1,7 @@
+ALU
 FSM
 I/O
+MEM
+NAND
 Pos
+WB
