@@ -55,7 +55,6 @@ of computers is halved. This trend has driven the rapid advancement of computing
 power for decades, though it is currently slowing down as we approach the
 physical limits of silicon manufacturing.
 
-
 #figure(
   image("assets/mooreslaw.png", width: 80%),
   caption: [As of 2015: progress has slowed, doubling every 2.5 years],
