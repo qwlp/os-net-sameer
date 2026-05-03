@@ -1,7 +1,11 @@
+A5
 ALU
 FSM
 I/O
 MEM
+Multi-core
 NAND
+Octa
 Pos
 WB
+deca

@@ -14,16 +14,52 @@
     decreased],
 ) <fig-techevolve>
 
-== Component of a Computer
+== Inside the PC
+- Computer systems have four parts:
+  + Hardware: physical components (e.g., CPU, RAM, Disk, Mouse, Keyboard)
+  + Software: system software, applications, middleware
+    - Middleware: Software that acts as an intermediary between different
+      systems or applications, facilitating their interaction and communication.
+  + Information processed by the system
+  + User: people involved in using the system
 
-- Computers mainly has the same component, from desktop to servers to embedded
-  devices and to mobile devices as well.
-- I/O includes:
-  + User-interface devices like display, keyboard, mouse...
-  + Storage devices like hard disks, CDs, DVDs, Flash
-  + Network adapters, such a pain...
+=== Inside the CPU
 
-[] To-do - Lecture 4,5
+#figure(
+  image("assets/applea5.png", width: 80%),
+  caption: [Apple A5 CPU],
+) <fig-applea5>
+
+- The CPU has many core configurations. Here are some:
+- Single core: One processing unit.
+- Dual core: Two processing units.
+- Quad core: Four processing units.
+- Octa core: Eight processing units.
+- Multi-core: General term for processors containing two or more independent
+  cores.
+
+Furthermore, there is deca-core (for 10 core)..., basically the more the cores
+the better the multitasking and parallel processing.
+
+
+#figure(
+  image("assets/sometechtrends.png", width: 80%),
+  caption: [Tech trends in recent decades],
+) <fig-sometechtrends>
+
+=== Moore's Law
+
+Gordon Moore (co-founder of Intel) observed in 1965 that the number of
+transistors on a microchip doubles approximately every two years, while the cost
+of computers is halved. This trend has driven the rapid advancement of computing
+power for decades, though it is currently slowing down as we approach the
+physical limits of silicon manufacturing.
+
+
+#figure(
+  image("assets/mooreslaw.png", width: 80%),
+  caption: [As of 2015: progress has slowed, doubling every 2.5 years],
+) <fig-mooreslaw>
 
 == Logic Gates
 
