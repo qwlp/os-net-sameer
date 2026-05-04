@@ -5,6 +5,8 @@ I/O
 MEM
 Multi-core
 NAND
+OS
+OSTEP
 Octa
 Pos
 WB
