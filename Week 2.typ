@@ -60,6 +60,65 @@ physical limits of silicon manufacturing.
   caption: [As of 2015: progress has slowed, doubling every 2.5 years],
 ) <fig-mooreslaw>
 
+== Components
+
+- Application software: is written in some higher level language.
+- System software:
+  - Compiler: translates high level code to machine code, can be a second step.
+  - OS: virtualization, parallelism, and concurrency
+- Hardware: processor, memory, I/O controllers...
+
+#figure(
+  image("assets/componentsheir.png", width: 80%),
+  caption: [Components],
+) <fig-componentsheir>
+
+== Instruction Sets
+
+- Is defined as a collection of operations or commands that a computer's CPU can
+  execute.
+- The ISA defines the interface between the hardware and the software; meaning
+  that different computers that different ISAs, but they are common in many
+  ways.
+- Speaking of ISAs, there are usually two specific types:
+  + CISC (Complex Instruction Set Computer): Provides many complex instructions
+    that perform multiple operations in a single line (Example: x86).
+  + RISC (Reduced Instruction Set Computer): Provides simpler instructions that
+    each take one clock cycle to complete (Examples: ARM, RISC-V, MIPS).
+- Examples of ISAs:
+  + MIPS (Microprocessor without Interlocked Pipelined Stages): A RISC ISA often
+    used in academia and embedded systems due to its simplicity.
+  + x86 (Intel 8086 family)
+  + ARM (Advanced RISC Machine)
+  + RISC-V (Reduced Instruction Set Computer V)
+- ISAs consists of three basic instructions:
+  + Arithmetic/bitwise logic
+  + Data transfers between registers/memory
+  + Control flow, jumping, functions
+- Level of Program Code: High-Level then to Assembly then to Hardware Rep (bits)
+
+Example:
+
+```c
+f = (g + h) - (i + j);
+```
+
+```asm
+add t0, g, h
+add t1, i, j
+sub f, t0, t1
+```
+
+== Components of The CPU
+
+The CPU consists of three main components:
+- CU (Control unit)
+- ALU
+- Registers
+- Cache
+- Buses
+- Clock
+
 == Logic Gates
 
 Computer are built of tiny switches (that can turn on (1) and off (0)) called
