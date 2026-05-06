@@ -117,3 +117,5 @@ OSTEP defines it in three steps which are:
   graphics drivers) in user space while keeping others in the kernel.
   - Examples: Windows NT (and its successors like Windows 10/11), macOS (XNU
     kernel).
+
+- We are doing Linux afterwords, woohoo!
