@@ -96,3 +96,24 @@ OSTEP defines it in three steps which are:
   [Services], [Request via system calls], [Direct access to hardware],
   [Stability], [Safe/Protected], [Critical/Requires care],
 )
+
+=== Kernel Architectures
+
+- *Monolithic Kernel*: All OS services (file system, device drivers, memory
+  management, etc.) run in the same kernel address space. This provides high
+  performance due to minimal communication overhead, but a bug in one component
+  can crash the entire system.
+  - Examples: Linux, FreeBSD, MS-DOS.
+
+- *Microkernel*: Only the most essential functions (minimal mechanisms for IPC,
+  virtual memory, and scheduling) run in the kernel mode. Other services run in
+  user space as separate processes. This design is highly modular and stable,
+  though communication between services can induce latency.
+  - Examples: QNX, L4, MINIX.
+
+- *Hybrid Kernel*: A compromise between monolithic and microkernel designs. It
+  maintains the core performance of a monolithic system while incorporating some
+  modularity from a microkernel, often by running certain services (like
+  graphics drivers) in user space while keeping others in the kernel.
+  - Examples: Windows NT (and its successors like Windows 10/11), macOS (XNU
+    kernel).
