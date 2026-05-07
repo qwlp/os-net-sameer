@@ -1,99 +1,62 @@
 #set page(paper: "a4", margin: 2cm)
-#set text(font: "New Computer Modern", size: 11pt)
 
-#align(center)[
-  = Revision Sheet: Number Systems & Arithmetic
-]
+#set enum(numbering: "1.a)")
 
-#let section(title) = {
-  v(0.5em)
-  text(weight: "bold", size: 13pt, fill: blue.darken(20%), title)
-  line(length: 100%, stroke: 0.5pt)
-  v(0.5em)
-}
+- Count in bases (from $1_"10" "to" 20_"10"$)
+  + 8
+  + 5
+  + 3
 
-#section("1. Base Conversion")
+- Convert from Bin to Dec
+  + Convert $1011_2$ to decimal.
+  + Convert $11010_2$ to decimal.
 
-*Integer to Base N (Repeated Division):*
-Divide the decimal number by the target base $N$. Keep track of the remainder.
-Continue dividing the quotient until it reaches 0. The result is the sequence of
-remainders in *reverse order* (bottom-up).
+- Convert from Dec to Bin
+  + Convert $45_"10"$ to binary.
+  + Convert $128_"10"$ to binary.
 
-*Example: $55_(10)$ to Base 6*
-$55 div 6 = 9$ (rem 1) \
-$9 div 6 = 1$ (rem 3) \
-$1 div 6 = 0$ (rem 1) \
-Result: $131_6$
+- Convert from Hex to Dec
+  + Convert $1A_16$ to decimal.
+  + Convert $"F.F"_16$ to decimal.
 
-*Fractional to Base N (Repeated Multiplication):*
-Multiply the fractional part by $N$. Record the integer part of the product.
-Take the remaining fractional part and repeat until the fraction becomes 0 or
-you reach desired precision. Read the integer parts in *forward order*
-(top-down).
+- Convert from Dec to Hex
+  + Convert $255_"10"$ to hexadecimal.
+  + Convert $4096_"10"$ to hexadecimal.
 
-*Example: $0.125_(10)$ to Base 16*
-$0.125 times 16 = 2.0$ \
-Result: $0.2_(16)$
+- Convert from Hex to Bin
+  + Convert $"A"3_16$ to binary.
+  + Convert $9E_16$ to binary.
 
----
+- Convert from Bin to Hex
+  + Convert $11010111_2$ to hexadecimal.
+  + Convert $1011001_2$ to hexadecimal.
 
-#section("2. Binary Representation")
+- Convert from any Base to any Base
+  + Convert $212_3$ to base 5.
+  + Convert $43_7$ to base 4.
 
-*Two's Complement (for $n$ bits):*
-1. Write the positive binary form.
-2. Invert all bits (0 becomes 1, 1 becomes 0).
-3. Add 1 to the result.
+- Most and Least Significant Digits
+  + Identify the MSB and LSB of $(1101001)_2$.
+  + Identify the MSD and LSD of $(3"A"7)_16$.
 
-*Binary to Decimal (Two's Complement):*
-If the MSB is 1, the number is negative. To find its magnitude, invert all bits
-and add 1, then apply the negative sign.
+- Floating Point Representation
+  + Represent $12.625_"10"$ in single-precision IEEE 754.
+  + Represent $-0.15625_"10"$ in single-precision IEEE 754.
+  + Convert the IEEE 754 value `0xC1480000` to decimal.
+  + Convert the IEEE 754 value `0x40A00000` to decimal.
 
-*Example: $1101011_2$ to decimal*
-1. Invert: $0010100$
-2. Add 1: $0010101 = 21$
-Result: $-21$
+- Convert from Bin to IEEE 754
+  + Represent $101.11_2$ in IEEE 754 single precision.
+  + Represent $-0.101_2$ in IEEE 754 single precision.
 
----
+- Convert from Bin to 2's Complement
+  + Find the 8-bit 2's complement of $101101_2$.
+  + Find the 8-bit 2's complement of $-15_"10"$.
 
-#section("3. Binary/Hex Shortcut")
+- Convert from any Base to IEEE 754
+  + Convert $(12.5)_10$ to IEEE 754 single precision.
+  + Convert $(A.8)_16$ to IEEE 754 single precision.
 
-*Binary to Hex:* Group bits into sets of 4 starting from the radix point (the
-dot), padding with zeros if necessary. Replace each 4-bit group with its
-corresponding hex digit.
-
-*Example: $110101.011_2$*
-$0011$ $0101$ . $0110$ \
-$= 35.6_(16)$
-
----
-
-#section("4. IEEE 754 Floating Point")
-
-*Standard Structure (Single Precision):*
-`[Sign (1)] [Exponent (8)] [Mantissa/Fraction (23)]`
-
-1. *Sign:* 0 for positive, 1 for negative.
-2. *Normalize:* Convert to scientific notation ($1.f times 2^e$). The mantissa
-  is the sequence $f$.
-3. *Bias:* Add $127$ to the exponent $e$ to get the stored exponent value.
-
-*Example: $-2.5$ to IEEE 754*
-1. $-2.5 = -10.1_2 = -1.01 times 2^1$
-2. Sign: 1
-3. Exponent: $1 + 127 = 128 = 10000000_2$
-4. Mantissa: $01000...0$ (trailing zeros)
-Result: `1 10000000 01000000000000000000000`
-
----
-
-#section("5. Floating Point Arithmetic Tips")
-
-When performing operations:
-1. *Alignment:* Shift the significand of the number with the smaller exponent
-  until both exponents match.
-2. *Operation:* Perform addition or subtraction on the significands.
-3. *Normalize:* Adjust the resulting significand and exponent so that there is
-  exactly one non-zero digit before the decimal point (e.g., $0.123 times 10^2$
-  becomes $1.23 times 10^1$).
-4. *Rounding:* Truncate or round to the required number of digits as specified
-  in the problem (e.g., 4 digits).
+- Convert from any Base to 2's Complement
+  + Represent $-20_"10"$ in 8-bit 2's complement.
+  + Represent $-12_8$ in 8-bit 2's complement.
