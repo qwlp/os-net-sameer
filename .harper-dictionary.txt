@@ -2,6 +2,7 @@ A5
 ALU
 FSM
 I/O
+ISPs
 MEM
 Multi-core
 NAND
