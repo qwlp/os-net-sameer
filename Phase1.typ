@@ -1,0 +1,29 @@
+- IEEE 754
+- 2's complement
+- 2's complement addition
+- Add/Sub in Bin
+- Floating Point IEEE
+- Conversion (Number System)
+- Moore's Law
+- Digital Circuit
+- MUX, DMUX, Flip flops
+- MIPS
+- Clock Rate
+- Registers
+- CPU Registers
+- Linux Commands (rmdir, mkdir, chmod, cat, vi, tree, top, grep, cd, xclock)
+- RISC/CISC
+- Process (Child, Parents), fork()
+- Hardware Interrupt
+- Memory - Cache, Registers
+- SRAM, DRAM
+- NAND, NOR
+- Universal Gates
+- Open Source OSes
+- Kernel
+- Monolithic / Microkernel Structures
+- Syscalls
+- PCB (Process Control Block) - Sections of the PCB
+- Data Section, Text Section, Heap, Stack
+- Bash (/bin/bash)
+- Virtual Memory
