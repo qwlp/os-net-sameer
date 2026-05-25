@@ -134,14 +134,14 @@ kathara connect MACHINE_NAME
 For example:
 
 ```sh
-kathara connect gwW
+kathara connect gww
 ```
 
 ## 4. Record the Existing Network Configuration
 
 For each subnet, inspect every connected host or gateway interface.
 
-On a machine such as `gwW`, show the configuration of `eth0`:
+On a machine such as `gww`, show the configuration of `eth0`:
 
 ```sh
 ip addr show dev eth0
@@ -175,13 +175,13 @@ mkdir -p ~/ctec1704/captures
 ```
 
 Connect to the gateway for the subnet you want to observe. For subnet
-`W`, connect to `gwW`:
+`W`, connect to `gww`:
 
 ```sh
-kathara connect gwW
+kathara connect gww
 ```
 
-Inside `gwW`, start a packet capture on `eth0`:
+Inside `gww`, start a packet capture on `eth0`:
 
 ```sh
 tcpdump -s0 -i eth0 -w /hosthome/ctec1704/captures/ip-dumpW1.pcap
@@ -247,13 +247,13 @@ Modify the running machines on subnet `W` so that they are all on:
 Use `ip addr` commands inside each relevant machine. The exact addresses
 must be valid host addresses inside the `/26` subnet.
 
-For example, if `m1`, `m2`, and `gwW` are on subnet `W`, you might use
+For example, if `m1`, `m2`, and `gww` are on subnet `W`, you might use
 addresses such as:
 
 ```text
 m1   146.227.150.65/26
 m2   146.227.150.66/26
-gwW  146.227.150.67/26
+gww  146.227.150.67/26
 ```
 
 On each machine, replace the existing address on the correct interface:
@@ -290,13 +290,13 @@ Stop the affected machines and start them again from the lab files.
 For a Kathara lab, stop selected machines with:
 
 ```sh
-kathara lclean --machines m1,m2,gwW
+kathara lclean --machines m1,m2,gww
 ```
 
 Then start them again:
 
 ```sh
-kathara lstart --machines m1,m2,gwW
+kathara lstart --machines m1,m2,gww
 ```
 
 If your installed Kathara version does not support `--machines`, stop and
