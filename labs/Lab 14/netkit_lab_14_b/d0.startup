@@ -1,0 +1,45 @@
+# set each port on the switch with a common MAC address
+# make it look like it was made by 3com Europe :-)
+ip link set dev eth0 address 08:00:4e:d0:d0:00
+ip link set dev eth1 address 08:00:4e:d0:d0:00
+ip link set dev eth2 address 08:00:4e:d0:d0:00
+ip link set dev eth3 address 08:00:4e:d0:d0:00
+ip link set dev eth4 address 08:00:4e:d0:d0:00
+
+# create the bridge (we will call it "sw0" - most examples will use br0)
+brctl addbr sw0
+
+# make all of the network cards part of the switch - add one by one
+brctl addif sw0 eth0
+brctl addif sw0 eth1
+brctl addif sw0 eth2
+brctl addif sw0 eth3
+brctl addif sw0 eth4
+
+# make sure no device has an IP address (network layer address)
+ip addr add 0.0.0.0 dev eth0
+ip addr add 0.0.0.0 dev eth1
+ip addr add 0.0.0.0 dev eth2
+ip addr add 0.0.0.0 dev eth3
+ip addr add 0.0.0.0 dev eth4
+
+# make sure each device is set to promiscuous mode
+ip link set eth0 promisc on
+ip link set eth1 promisc on
+ip link set eth2 promisc on
+ip link set eth3 promisc on
+ip link set eth4 promisc on
+
+# make sure each device is up
+ip link set eth0 up
+ip link set eth1 up
+ip link set eth2 up
+ip link set eth3 up
+ip link set eth4 up
+
+# since we have loops ensure, spanning tree is active
+brctl stp sw0 on
+brctl setbridgeprio sw0 50
+
+# finally, bring the bridge up
+ip link set dev sw0 up

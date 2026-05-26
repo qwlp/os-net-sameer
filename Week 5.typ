@@ -346,3 +346,7 @@ are usually written as four decimal numbers separated by dots, like
 - Main difference:
   - `RIP` and `OSPF` are mostly for routing **inside** one organization.
   - `BGP` is for routing **between** different organizations and networks.
+
+
+== Link Layer
+
