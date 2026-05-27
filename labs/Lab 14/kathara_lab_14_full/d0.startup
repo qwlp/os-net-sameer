@@ -1,0 +1,16 @@
+# Configure d0 as a 5-port learning bridge.
+for iface in eth0 eth1 eth2 eth3 eth4; do
+    ip link set dev "$iface" address 08:00:4e:d0:d0:00
+    ip addr flush dev "$iface"
+    ip link set dev "$iface" promisc on
+    ip link set dev "$iface" up
+done
+
+ip link add name sw0 type bridge
+ip link set dev sw0 type bridge stp_state 1 priority 50
+
+for iface in eth0 eth1 eth2 eth3 eth4; do
+    ip link set dev "$iface" master sw0
+done
+
+ip link set dev sw0 up
