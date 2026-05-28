@@ -1,0 +1,19 @@
+- HTTP status codes
+- Acronyms:
+  - TLD, SSH, TLS, SSL, CRC, CSMA, DHCP, DNS, RFC
+- Netkit
+- LINUX Commands
+- Protocols
+- TCP/IP - 5 layers
+- FTP
+- Segments / Datagram / Frames – for each layer
+- SSL – which layer, uses
+- Physical media – Wired, Wireless
+- ARP
+- IP addressing / Subnet masking
+- TCP / UDP
+- Telnet
+- HTTP Security
+- Socket
+- Client/server - asynchronous
+- IP Suite
