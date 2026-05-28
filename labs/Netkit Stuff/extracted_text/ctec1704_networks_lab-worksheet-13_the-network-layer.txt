@@ -1,0 +1,230 @@
+Operating Systems & Networks                                                       CTEC1704
+                                     Lab Worksheet 13
+                             The Network Layer - IPV4 Addressing
+
+This Week’s Objectives
+
+1.        Be able to configure multiple netkit labs.
+2.        Be able to describe how IP addresses are used to route datagrams.
+
+
+Expected Outcomes
+
+After the laboratory session, students should be able to:
+
+         configure an individual Linux host via ip, /etc/network/interfaces and ifup.
+         configure several hosts to be on the same subnet.
+         explain how netmasks / VLSM and CIDR notation define the portion of the IP address
+          that identifies the network
+          • and by implication, how they also define the portion of the address that identifies
+              unique hosts on a network
+
+
+Workplan
+
+These lab worksheets assume that you will make accurate notes of everything that you do for
+later consideration and revision. You should use your lab diary to note down items such as
+commands used, the outcome of each command, and answers to questions posed in these
+instructions.
+
+All lab machines have CherryTree Notes software installed, which facilitates organised note-
+taking. Alternatively, you could buy a hardback A4 laboratory notebook.
+
+NB this is a complex lab – please read each instruction carefully – if you miss out any steps,
+then don't expect to achieve the correct results! You will need to have completed and
+thoroughly understood all the steps before the next lab session.
+
+Remember that there is a lab work wiki available to you on BB. Please use this to share and
+communicate with your colleagues.
+
+     Make sure you have completed all the steps in this worksheet before the next
+                                   lab session.
+
+
+
+
+©cfi/dmu                                                                                         1
+ctec1704_networks_lab-worksheet-13_the-network-layer
+Operating Systems & Networks                                                        CTEC1704
+                                     Lab Worksheet 13
+                             The Network Layer - IPV4 Addressing
+
+Starting assumptions
+
+1.       You have completed all the work in previous lab sheets
+
+         •   You have used Netkit lstart to launch a coordinated group of several virtual
+             machines. Specifically, you are aware of how this group is coordinated via the
+             lab.conf file.
+
+         •   You know how to shut down virtual machines using lhalt and lcrash.
+
+         •   You have used ip and ping within the virtual machines.
+
+         •   You have saved captured network traffic from a virtual machine using tcpdump.
+
+         •   You have viewed a packet capture file in the real Linux host using wireshark.
+
+Activities
+Reminder
+     •   You need to make accurate notes of what you do.
+
+     •   You will complete unfinished activities before the next timetabled lab session.
+
+     •   You will resolve what you do not understand by conducting your own careful (and
+         ethically sound) experimentation and / or further reading.
+
+IPV4 Addressing
+
+(IPv4) is the most commonly used version of the Internet Protocol (IP). Each device attached
+to a network will have a unique IP address of the format 999.999.999.999. Part of the
+address is the network identifier, and the remainder locates a specific host on that network.
+The CIDR number (often seen as a /99 at the end of the IP address) tells a network device
+where the divide between the network and host addresses falls.
+
+Read some background about this topic here and here.
+
+Getting Started
+
+2.       Create a directory for lab 13’s work. Use a command similar to this:
+
+
+cd ~
+mkdir -p ctec1704/lab_13
+
+
+3.       Download the zipped archive netkit_lab_13.tar.xz from Blackboard.
+         • This contains the configuration information for 15 virtual machines.
+
+
+
+©cfi/dmu                                                                                      2
+ctec1704_networks_lab-worksheet-13_the-network-layer
+Operating Systems & Networks                                                        CTEC1704
+                                    Lab Worksheet 13
+                            The Network Layer - IPV4 Addressing
+
+4.    Extract the contents of the archive file, and make sure that all the files and directories
+      for the lab are in the new lab_13 directory (not a sub-directory).
+
+
+.../lab_13:~$ tar -xvf netkit_lab_13.tar.xz
+
+
+5.    This netkit lab represents the configuration of nine hosts and five gateways / routers.
+      Note that these are connected via hubs rather than switches (what is the difference)?
+
+      Connectivity is as the ASCII art diagram in the file lab.conf (draw this in your own
+      notes to annotate as the lab progresses).
+
+6.    Ensure that you are in the newly created lab_13 directory and list its contents.
+
+
+...$ cd ~/ctec1704/lab_13
+.../lab_13: ls -l
+
+
+7.    You will see several directories (some empty, some with content), one for each virtual
+      machine.
+
+8.    Launch the virtual machines using the instruction:
+
+
+.../lab_13$ lstart
+
+
+9.    You should see virtual machines start up in quick succession. Use the vlist command
+      in the host terminal to list all the open netkit terminals. Arrange the windows on the
+      screen so they are consistent with the network diagram you have created in your
+      notes.
+
+Look at the configuration
+
+10.   The subnets have been labelled W, X, Y, Z and D. For each subnet in turn, look at the
+      network configuration of each host / network card connected.
+
+      In particular note the IP address, the netmask and the broadcast address of each.
+      Make sure you know how each machine/NIC got its IP address.
+
+
+root@gwW:~# ip addr show dev eth0
+
+
+
+
+©cfi/dmu                                                                                        3
+ctec1704_networks_lab-worksheet-13_the-network-layer
+Operating Systems & Networks                                                      CTEC1704
+                                   Lab Worksheet 13
+                           The Network Layer - IPV4 Addressing
+
+11.    Start capturing the traffic from the gateway machine and saving it to your captures
+       directory. For example, on subnet W, the gateway machine would be gwW so the
+       instruction would be:
+
+
+root@gwW:~# tcpdump -s0 -i eth0 -w /hosthome/ctec1704/captures/ip-
+dumpW1.pcap
+
+
+12.    Ping between two machines in the same subnet. Stop capturing the the traffic (Ctrl-c
+       in the terminal where you started the tcpdump) and analyse it using wireshark.
+
+13.    Look up the IP header format in RFC 791. Compare what you find in the RFC
+       document with what you see in the middle panel of the wireshark capture for one
+       particular "ping" of your choice.
+
+Change the configuration
+
+14.    Modify the running virtual machines on subnet W so that all the machines are on a
+       different subnet. Specifically, place them all on the 146.227.150.64/26 subnet.
+
+       Why can they not go on the 146.227.150.64/25 subnet?
+
+15.    Crash and restart the virtual machines on subnet W to restore them to the original
+       configuration.
+
+
+.../lab_13$ lcrash m1 m2 gwW
+
+
+
+
+.../lab_13$ lstart m1 m2 gwW
+
+
+16.    Add an extra machine to the lab:
+       • Give it the name foo, give it one Ethernet card and put it onto subnet X.
+       • Record precisely what changes you made so that the extra machine works with the
+             other machines in the lab.
+       • You will find you need to edit lab.conf, create a directory and then figure out how
+             to ensure it starts up with the correct IP address.
+
+Extension activities
+
+17.    Give two machines on the same subnet the same IP address. What happens when you
+       try and interact with them?
+
+18.    Make one or two configuration changes so things are slightly broken. Challenge a
+       colleague to identify and correct the problem.
+
+
+©cfi/dmu                                                                                      4
+ctec1704_networks_lab-worksheet-13_the-network-layer
+Operating Systems & Networks                                                  CTEC1704
+                                 Lab Worksheet 13
+                         The Network Layer - IPV4 Addressing
+
+
+19.   Look at the cidr spreadsheets (there are both Excel and ODF formats - they were
+      created in ODF so that should be more robust). Explain exactly what the spreadsheets
+      show.
+
+20.   Experiment ...
+
+
+
+
+©cfi/dmu                                                                                 5
+ctec1704_networks_lab-worksheet-13_the-network-layer
+

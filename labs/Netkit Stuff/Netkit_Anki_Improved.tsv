@@ -1,0 +1,79 @@
+Front	Back	Tags
+What is Netkit used for in these labs?	Netkit creates lightweight virtual network devices (hosts, routers, switches, servers) on one host machine so you can build and test networks without physical hardware.	netkit lab10 fundamentals
+What does `vstart pc1 --eth0=A` create?	It starts a Netkit VM named `pc1` with network interface `eth0` connected to collision domain `A`.	netkit lab10 commands
+In `vstart pc1 --eth0=A`, what does `A` represent?	`A` is the collision domain or virtual network segment that the VM interface is connected to.	netkit lab10
+What file is automatically created for a Netkit VM such as `pc1`?	`pc1.disk`, a virtual filesystem for that VM.	netkit lab10
+How do you list currently running Netkit virtual machines?	Use `vlist` on the host machine.	netkit lab10 commands
+How do you remove a VM and its disk file in the lab workflow?	Use `vhalt pc1 -r`; the `-r` removes the VM disk file as well as halting the VM.	netkit lab10 commands
+What does `ip link` show inside a Netkit VM?	It shows network interfaces, including names such as `eth0`, MAC addresses, and whether interfaces are `UP` or `DOWN`.	linux netkit lab10
+How do you bring interface `eth0` up in Linux?	`ip link set eth0 up`	linux netkit lab10 commands
+How do you assign `10.0.0.1/24` to `eth0`?	`ip addr add 10.0.0.1/24 dev eth0`	linux netkit lab10 commands
+What does `/24` mean in `10.0.0.1/24`?	The first 24 bits are the network prefix; this is equivalent to netmask `255.255.255.0`.	ipv4 lab10 lab13
+Why can `pc1` and `pc2` communicate when both use `--eth0=A`?	Their interfaces are on the same virtual collision domain, so they share the same layer-2 network segment.	netkit lab10 link_layer
+What command sends exactly two ICMP echo requests to `10.0.0.2`?	`ping -c 2 10.0.0.2`	linux lab10 commands
+What is `tcpdump` used for in these labs?	To capture Ethernet frames and packets on an interface for live inspection or later Wireshark analysis.	tcpdump wireshark lab10
+How do you capture verbose traffic on `eth0` with tcpdump?	`tcpdump -v -i eth0`	tcpdump lab10 commands
+How do you save a full packet capture from `eth0` to a pcap file?	`tcpdump -s0 -i eth0 -w /path/to/file.pcap`	tcpdump wireshark commands
+Why use `-s0` with tcpdump?	It captures the full packet rather than truncating packet data.	tcpdump wireshark
+What two protocols are commonly visible when first pinging another host on a LAN?	ARP and ICMP. ARP resolves the destination MAC address; ICMP carries the ping echo request/reply.	arp icmp lab10
+What does ARP do?	ARP maps an IPv4 address to a MAC address on the local network.	arp link_layer ipv4
+What does ICMP do in the ping workflow?	ICMP carries echo request and echo reply messages used to test reachability.	icmp ipv4
+What is Wireshark used for in these labs?	Wireshark opens packet captures and decodes protocols such as Ethernet, ARP, IP, ICMP, TCP, UDP, DNS, and HTTP.	wireshark lab10
+What is the difference between Netkit `v...` commands and `l...` commands?	`v...` commands manage individual VMs; `l...` commands manage a complete Netkit lab with multiple machines.	netkit lab11
+What does `lstart` do?	It starts the virtual machines defined by the current Netkit lab files.	netkit lab11 commands
+What does `lcrash` do?	It stops lab machines abruptly, useful for resetting a lab state during exercises.	netkit lab11 commands
+What does `lclean` do?	It cleans generated lab state such as VM disk files after a lab has been stopped.	netkit lab11 commands
+What files are usually present in a complete Netkit lab directory?	VM directories, one or more `.startup` files, `lab.conf`, and often `lab.dep`.	netkit lab11
+What is `lab.conf` used for?	It defines the lab topology, including machines, interfaces, and the collision domains/subnets they connect to.	netkit lab11 lab13
+What does a `lab.conf` line like `web-client[0]=lan` mean?	Interface `eth0` of `web-client` is connected to the virtual network segment named `lan`.	netkit lab11
+What are `.startup` files used for in Netkit?	They contain commands run inside each VM during startup, such as setting IP addresses or starting services.	netkit lab11
+What service provides the web server in lab 11?	Apache 2.	http apache lab11
+What directory is the default Apache web root in the lab?	`/var/www/html`	http apache lab11
+What command restarts Apache inside the web-server VM?	`systemctl restart apache2`	apache lab11 commands
+What command stops Apache inside the web-server VM?	`systemctl stop apache2`	apache lab11 commands
+What command checks Apache service status?	`systemctl status apache2`	apache lab11 commands
+How do you manually connect to the web server on port 80 from `web-client`?	`telnet 192.168.150.2 80`	http telnet lab11 commands
+What minimal HTTP request retrieves the default page over Telnet?	`GET / HTTP/1.0` followed by a blank line.	http lab11
+Why is a blank line needed after an HTTP/1.0 request in Telnet?	It marks the end of the HTTP request headers so the server knows the request is complete.	http lab11
+What does HTTP status `200 OK` mean?	The request succeeded and the server is returning a successful response.	http lab11
+What is the HTTP response payload in the lab 11 Telnet example?	The HTML content from `index.html`.	http lab11
+What does `Content-Length` identify in an HTTP response?	The size of the response body in bytes.	http lab11
+What does `Content-Type` identify in an HTTP response?	The media type of the response body, such as `text/html`.	http lab11
+How can the Apache “could not reliably determine the server's name” warning be fixed in the lab?	Create `web-server/etc/apache2/httpd.conf` on the host and add `ServerName 127.0.0.1`.	apache lab11
+How can Apache be started automatically when the web-server VM boots?	Add `systemctl start apache2` to `web-server.startup`.	apache netkit lab11
+What is `lynx` used for in lab 11?	`lynx` is a text-based web browser used inside the Netkit VM to request web pages without a graphical browser.	http lab11
+In a captured HTTP exchange, what transport protocol carries HTTP?	TCP.	http tcp lab11
+Which TCP flags appear during connection setup?	`SYN`, then `SYN/ACK`, then `ACK`.	tcp lab11 lab12
+Which TCP flags commonly appear during connection teardown?	`FIN` and `ACK` flags are used to close the TCP connection.	tcp lab11 lab12
+What is the main difference between TCP and UDP?	TCP is connection-oriented and provides reliable ordered delivery; UDP is connectionless and does not guarantee delivery or ordering.	tcp udp lab12
+What tool is described as the “Swiss army knife of networking” in lab 12?	`netcat`, also called `nc`.	netcat lab12
+What does a netcat listener do?	It waits for incoming TCP or UDP traffic on a chosen port.	netcat lab12
+Which netcat option switches from TCP to UDP?	`-u`	netcat udp lab12 commands
+What identifies an application endpoint at the transport layer?	A port number, combined with the host IP address and transport protocol.	tcp udp lab12
+What information is found in a UDP header?	Source port, destination port, length, and checksum.	udp lab12
+What information is found in a TCP header that supports reliable communication?	Sequence numbers, acknowledgement numbers, flags, window size, checksum, and ports.	tcp lab12
+How are UDP datagrams carried across the network in these labs?	UDP datagrams are carried inside IP packets, which are carried inside Ethernet frames on the LAN.	udp ipv4 ethernet lab12
+What command can show active IPv4 network sockets in Linux?	`netstat` with IPv4-focused options, depending on the exact view required.	linux lab12
+What is an IPv4 address used for?	It identifies a host interface at the network layer and supports routing between networks.	ipv4 lab13
+What two parts does an IPv4 address contain?	A network portion and a host portion. The CIDR prefix length marks the boundary.	ipv4 lab13
+What does CIDR notation describe?	The number of prefix bits used for the network part of an IP address, such as `/26`.	ipv4 cidr lab13
+What is the netmask for `/26`?	`255.255.255.192`	ipv4 cidr lab13
+How many addresses are in a `/26` IPv4 subnet?	64 total addresses; usually 62 usable host addresses after network and broadcast addresses.	ipv4 cidr lab13
+What is the address range for `146.227.150.64/26`?	Network `146.227.150.64`, usable hosts `146.227.150.65` to `146.227.150.126`, broadcast `146.227.150.127`.	ipv4 cidr lab13
+Why can `146.227.150.64` be a `/26` network address but not a `/25` network address?	`/26` blocks increment by 64, so `.64` is a valid boundary. `/25` blocks increment by 128, so valid boundaries are `.0` and `.128`.	ipv4 cidr lab13
+What command shows IP address, netmask, and broadcast details for `eth0`?	`ip addr show dev eth0`	linux ipv4 lab13 commands
+What should you inspect for each subnet in lab 13?	Each connected interface's IP address, netmask, broadcast address, and how the address was assigned.	ipv4 lab13
+What happens if two machines on the same subnet use the same IP address?	They conflict: ARP may resolve unpredictably, traffic may go to the wrong host, and connectivity becomes unreliable.	ipv4 arp lab13
+What is the role of a gateway/router in the Netkit topology?	It connects separate IP networks and forwards packets between them based on routing information.	routing ipv4 lab13
+What is the link layer responsible for?	Local network delivery over a single link, including MAC addressing, Ethernet framing, switching, and ARP interactions.	link_layer ethernet lab14
+What is a MAC address?	A layer-2 hardware address used to identify a network interface on a local Ethernet segment.	ethernet lab14
+What is a switch/bridge used for?	It forwards Ethernet frames between ports based on learned MAC addresses.	ethernet switching lab14
+Does the lab 14 switch `a0` need an IP address to switch Ethernet frames?	No. A switch/bridge forwards at layer 2 and does not need an IP address for basic frame switching.	switching lab14
+What Linux command manages bridges in lab 14?	`brctl`	switching lab14 commands
+What does it mean to bond/add an interface to a bridge?	It attaches a physical or virtual interface as a bridge port so frames can be forwarded through the bridge.	switching lab14
+What is the difference between a hub and a switch?	A hub repeats frames to all ports; a switch learns MAC addresses and forwards frames only where needed when possible.	ethernet switching lab13 lab14
+Why do hosts `h1`, `h2`, and `h3` have IP addresses while switch `a0` does not?	The hosts communicate at layer 3 using IP; the switch only forwards layer-2 Ethernet frames.	link_layer ipv4 lab14
+What should you record from each host startup file in lab 14?	Interface name, MAC address, and IP address.	lab14 netkit
+When analysing Ethernet in Wireshark, what addresses should you compare?	Source and destination MAC addresses in the Ethernet header, then source and destination IP addresses in the IP header.	wireshark ethernet ipv4
+What does encapsulation mean in these labs?	Application data is wrapped in transport segments/datagrams, then IP packets, then Ethernet frames for local delivery.	networking fundamentals
+What is the correct layer order for HTTP over TCP on Ethernet?	HTTP data -> TCP segment -> IP packet -> Ethernet frame.	networking http tcp ipv4 ethernet

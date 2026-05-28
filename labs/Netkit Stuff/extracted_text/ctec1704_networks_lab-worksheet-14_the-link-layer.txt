@@ -1,0 +1,442 @@
+Operating Systems & Networks                                                           CTEC1704
+                                         Lab Worksheet 14
+                                          The Link Layer
+
+The Link Layer, MAC addresses, Switches (aka Bridges), Hubs, Ethernet
+
+This Week’s Objectives
+
+1.        Be able to explain the differences between hubs and switches at the Link Layer.
+
+
+Expected Outcomes
+
+After the laboratory session, students should be able to:
+
+         explain the difference between a hub and a switch.
+         configure a software switch in Linux using brctl.
+         explain the different features of a captured pcap files, obtained from different bridge
+          ports.
+
+
+Workplan
+
+These lab worksheets assume that you will make accurate notes of everything that you do for
+later consideration and revision. You should use your lab diary to note down items such as
+commands used, the outcome of each command, and answers to questions posed in these
+instructions.
+
+All lab machines have CherryTree Notes software installed, which facilitates organised note-
+taking. Alternatively, you could buy a hardback A4 laboratory notebook.
+
+NB this is a complex lab – please read each instruction carefully – if you miss out any steps,
+then don't expect to achieve the correct results! You will need to have completed and
+thoroughly understood all the steps before the next lab session.
+
+Remember that there is a lab work wiki available to you on BB. Please use this to share and
+communicate with your colleagues.
+
+     Make sure you have completed all the steps in this worksheet before the next
+                                   lab session.
+
+
+
+
+©cfi/dmu                                                                                            1
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                         CTEC1704
+                                       Lab Worksheet 14
+                                        The Link Layer
+
+Starting assumptions
+
+1.       You have completed all the work in previous lab worksheets
+
+         ◦ You are familiar with basic Linux commands used to inspect and manipulate
+           directories and files.
+         ◦ You have used Netkit (specifically vstart) to launch two virtual machines.
+         ◦ You have used ip commands within the virtual machines to configure network
+           interfaces.
+         ◦ You have saved captured network traffic from a virtual machine using tcpdump.
+         ◦ You have viewed a packet capture file in the real Linux host using wireshark.
+
+Activities
+Reminder
+     •   You are prepared to make accurate notes of what you do
+     •   You will complete unfinished activities before the next timetabled lab session.
+     •   You will resolve what you do not understand by conducting your own careful (and
+         ethically sound) experimentation and/or further reading.
+
+
+Getting Started
+
+2.       Create a directory for this lab’s work as per previous labs. Use a relevant directory
+         name.
+
+3.       Download the two netkit lab zipped archives (netkit_lab_14_a.tar.xz and
+         netkit_lab_14_b.tar.xz) from the Blackboard shell and save them in your weekly
+         directory. Each archive contains the configuration information for multiple netkit
+         virtual machines.
+
+4.       Unzip the file netkit_lab_14_a.tar.xz with the command:
+
+
+.../lab_14$ tar -xvf netkit_lab_14_a.tar.xz
+
+
+5.       Move into the new directory and list the directory with the ls command. You will see
+         files and directories to create 4 xterms.
+
+
+.../lab_14$ cd netkit_lab_14_a
+.../netkit_lab_14_a$ ls -l
+
+
+
+
+©cfi/dmu                                                                                         2
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                     CTEC1704
+                                     Lab Worksheet 14
+                                      The Link Layer
+
+6.    You will see
+
+      ◦   one lab.conf file
+      ◦   one lab.dep file
+      ◦   four directories (all empty)
+      ◦   four *.startup files
+
+7.    Using the tree command:
+
+
+.../netkit_lab_14_a$ tree
+
+
+
+
+8.    The network simulates the configuration of a network switch/bridge (a0) and three
+      hosts (h1, h2, h3). The switch (a0) will not have a network (IP) address. Each of the
+      three hosts will have a network address so we can use them to ping each other. We
+      have given the switch (a0) eight ports, connected three of them to h1, h2, and h3, and
+      left the other five unused.
+
+9.    Connectivity is as in the diagram below (draw this in your own notes to annotate as
+      the lab progresses):
+
+
+                                                Switch a0
+
+
+
+
+                              h1           h2           h3
+
+©cfi/dmu                                                                                       3
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                        CTEC1704
+                                       Lab Worksheet 14
+                                        The Link Layer
+
+The Netkit lab files
+
+Use the cat command to review the contents of a file. NB only ever open a file in a text
+editor if you mean to make some changes to it.
+
+Eg:
+
+
+cat lab.conf
+
+
+What machines will be added to the switch, and how is this done?
+
+*.startup files
+
+10.    Inspect the contents of each of the startup files.
+
+11.    These files contain the final instructions that are executed, before you are presented
+       with the login prompt of the virtual machine. The startup files for h1, h2, and h3 are
+       all very similar, and they are only two lines long. Look at the content of each of these
+       files in turn and use the content to annotate your network diagram in your notes.
+       Ensure you get the network card designation (eth0, eth1 etc), the MAC address and
+       the IP address recorded accurately.
+
+12.    The file a0.startup is more complex. This represents a switch (or bridge – essentially
+       the same thing). Note the MAC addresses allocated to each Ethernet card. What do
+       you notice?
+
+13.    What is the name that we give to the bridge using the brctl instruction?
+       NB The switch is configured and managed with the Linux brctl command (man brctl).
+
+14.    What instruction is used to bond an interface card (eth4 for example) to the bridge?
+
+15.    Do any of the network devices on a0 have an IP address?
+
+16.    With your current directory as the netkit_lab_14_a directory (which contains the
+       lab.conf and lab.dep files), launch the four virtual machines using the instruction:
+
+
+.../netkit_lab_14_a$ lstart
+
+
+17.    You will see four virtual machines start up in quick succession (a0 will be slower than
+       the other three). Once they have started, move them to positions on the screen that
+       match the diagram.
+
+
+
+
+©cfi/dmu                                                                                      4
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                       CTEC1704
+                                      Lab Worksheet 14
+                                       The Link Layer
+
+Look at the configuration
+
+18.    On the a0 machine, look at the configuration of all the network devices. Explain the
+       relationship between the MAC address of the switch (sw0) and the ethn devices.
+
+
+root@a0:~# ip link
+
+
+19.    Look at what the switch already knows about MAC addresses so far (record this in
+       your notes):
+
+
+root@a0:~# brctl showmacs sw0
+
+
+Output:
+
+NB the switch will collect MAC addresses from all messages that pass through it.
+
+
+
+
+20.    On h2, use tcpdump to capture all traffic on its eth0 device. NB the directory
+       /hosthome corresponds to the root directory of your logged in user account.
+
+
+root@h2:~# tcpdump -i eth0 -s0 -w
+     /hosthome/ctec1704/captures/h2-d1.pcap
+
+
+21.    Similarly, on h3, use tcpdump to capture all traffic on its eth0 device.
+
+
+root@h3:~# tcpdump -i eth0 -s0 -w
+     /hosthome/ctec1704/captures/h3-d1.pcap
+
+
+
+
+©cfi/dmu                                                                                      5
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                       CTEC1704
+                                     Lab Worksheet 14
+                                      The Link Layer
+
+22.   Now on h1, we are going to ping h3 with precisely one ping (technically this is at the
+      network layer but is the least intrusive way of getting generating a tiny amount of link
+      layer traffic).
+
+
+root@h1:~# ping -c1 192.168.97.43
+
+
+23.   Stop the tcpdump in h2 and h3 using ctrl-c. Note in both cases how many packets
+      (technically these are actually frames, not packets) have been received by the filter.
+
+24.   Look at what the switch now knows about mac addresses. On a0 execute the below
+      command. What do you notice?
+
+
+root@a0:~# brctl showmacs sw0
+
+
+25.   On the actual host system, use wireshark to view h2-d1.pcap and h3-d1.pcap. In each
+      case, explain what you can see there in the context of what the switch knows of the
+      MAC addresses to which it is connected.
+
+26.   On h2, ping h3 precisely twice:
+
+
+root@h2:~# ping -c2 192.168.97.43
+
+
+27.   Look again at what the bridge knows, using:
+
+
+root@a0:~# brctl showmacs sw0
+
+
+28.   Explain what you see. In particular:
+      • What does the switch use to learn which MAC addresses can be found through
+         which port?
+      • What does the switch do when it it does not know which port to use for a MAC
+         address?
+
+29.   Now to expand the network:
+
+
+
+
+©cfi/dmu                                                                                       6
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                       CTEC1704
+                                      Lab Worksheet 14
+                                       The Link Layer
+
+Extension activity: adding a distribution layer
+
+30.    Starting assumption: the four machines of netkit_lab_14_a (ie a0, h1, h2, h3) are
+       running.
+
+31.    Move into the lab_14 directory, and extract the second example file.
+
+
+.../lab_14/netkit_lab_14_a$ cd ~/ctec1704/lab_14
+.../lab_14$ tar -xvf netkit_lab_14_b.tar.xz
+
+
+32.    Open a second terminal (hint: ctrl shift t will open a new terminal tab), move into the
+       new directory netkit_lab_14_b and list its contents.
+
+.../lab_14/$ cd netkit_lab_14_b
+.../lab_14/netkit_lab_14_b$ ls -l
+
+
+33.    This directory contains the configuration information for six further virtual machines.
+       This represents the configuration of three more switches (a10, d0 and d1) and three
+       new hosts (h101, h102, h103).
+       • The switches will not have network (IP) addresses.
+       • Each of the three hosts will have a network address so we can use them to ping
+          each other.
+       • The switch (a10) has been configured with eight ports, connected three of them to
+          h101, h102, and h103, connected one to switch d0 and one to switch d1.
+       • Review the lab.conf file to understand the connections.
+       • Any remaining ports are unused.
+       • Connectivity is as in the diagram below (draw this in your own notes to annotate
+          as the lab progresses):
+
+
+                                d0                                     d1
+
+
+
+                                a0                                    a10
+
+
+
+
+                            h1        h2          h3        h101 h102 h103
+
+©cfi/dmu                                                                                         7
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                    CTEC1704
+                                     Lab Worksheet 14
+                                      The Link Layer
+
+34.   Note the presence of redundant links between a0, a10, d0 and d1. These extra links
+      create alternative paths between hosts.
+
+      For example a message from h1 to h102 could be routed by any of these:
+      h1 => a0 => d1 => a10 => h102
+      h1 => a0 => d0 => a10 => h102
+      h1 => a0 => d1 => d0 => a10 => h102
+      etc
+
+      In a worst case scenario, messages could simple cycle around the switches and
+      possibly never arrive at their destination – know as the looping problem
+
+      Fortunately another protocol - the Spanning Tree Protocol (STP) - was developed to
+      prevent looping problems.
+
+35.   Note the six directories (all empty), one for each virtual machine.
+
+36.   Launch the new lab using:
+
+
+.../netkit_lab_14_b$ lstart
+
+
+37.   Go to each of the four switches and, after each visit, display the MAC addresses each
+      has learned. Write these on your diagram. Contrast this to the situation where we
+      only had the one switch a0.
+
+
+root@d0:~# brctl showmacs sw0
+
+
+38.   ping h3 from h101
+
+
+root@h101:~# ping -c1 192.168.97.43
+
+
+39.   then use brctrl again to show what each switch has now learned about MAC
+      addresses.
+
+
+root@d0:~# brctl showmacs sw0
+
+
+40.   What can you infer about which switches carried the ping traffic.
+
+
+
+
+©cfi/dmu                                                                                      8
+ctec1704_networks_lab-worksheet-14_the-link-layer
+Operating Systems & Networks                                                          CTEC1704
+                                      Lab Worksheet 14
+                                       The Link Layer
+
+More extension activities: broadcast storms
+
+41.    Turn on tcpdump, listening on d1
+
+
+root@d1:~tcpdump -s0 -i sw0 -w /hostlab/d1-dump1.pcap
+
+
+42.    Bring down selected links between the switches, for example on d0 try executing:
+
+
+root@d0:~# ip link set eth3 down
+
+
+Spanning Tree Protocol
+
+Review: From the diagram above, you will emember that multiple routes exist between hosts:
+
+eg
+       h1 => a0 => d0 => d1 => a10 => h103
+
+       or
+
+       h1 => a0 => d1 => d0 => a10 => h103
+
+This can lead to broadcast storms, where messages can loop continuously. To prevent this,
+the Spanning Tree Protocol was developed. Read about this here and here.
+
+43.    Bring all the links back up, then disable spanning tree on all the switches:
+
+
+brctl stp sw0 off
+
+
+44.    Make sure you have tcpdump running on one of the switches, then ping a non-existent
+       host. See if you can achieve a broadcast storm.
+
+45.    Experiment!!!
+
+
+
+
+©cfi/dmu                                                                                     9
+ctec1704_networks_lab-worksheet-14_the-link-layer
+
