@@ -2,7 +2,7 @@
 - Acronyms:
   - TLD, SSH, TLS, SSL, CRC, CSMA, DHCP, DNS, RFC
 - Netkit
-- LINUX Commands
+- Linux Commands
 - Protocols
 - TCP/IP - 5 layers
 - FTP
