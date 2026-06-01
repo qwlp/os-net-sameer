@@ -1,0 +1,16 @@
+// pdn; 2012: added entry for zones
+
+zone "csc.dmu.test" {
+        type master;
+        file "/etc/bind/db.test.dmu.csc";
+};
+
+zone "172.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.172";
+};
+
+zone "150.227.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.10.227.150";
+};
