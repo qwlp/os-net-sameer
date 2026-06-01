@@ -20,7 +20,6 @@ $TTL    8h
 ; nameserver(s)
 ;
 @	IN	NS	dns1.csc.dmu.test.
-	IN	NS	dns2.csc.dmu.test.
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; Host pointers to canonical name
@@ -28,21 +27,20 @@ $TTL    8h
 ; "W" network (172.28.97.40/29)
 41.97.28	IN	PTR	m1.csc.dmu.test.
 42.97.28	IN	PTR	m2.csc.dmu.test.
-46.97.28	IN	PTR	gwW.csc.dmu.test.
+46.97.28	IN	PTR	gww.csc.dmu.test.
 
 ; "X" network (172.21.62.96/27)
 106.62.21	IN	PTR	m6.csc.dmu.test.
 107.62.21	IN	PTR	m7.csc.dmu.test.
-126.62.21	IN	PTR	gwX.csc.dmu.test.
+126.62.21	IN	PTR	gwx.csc.dmu.test.
 
 ; "Y" network (172.19.78.0/23)
 112.78.19	IN	PTR	m12.csc.dmu.test.
 213.79.19	IN	PTR	m13.csc.dmu.test.
-254.79.19	IN	PTR	gwY.csc.dmu.test.
+254.79.19	IN	PTR	gwy.csc.dmu.test.
 
 ; "Z" network (172.17.32.0/20)
 116.33.17	IN	PTR	m16.csc.dmu.test.
 117.44.17	IN	PTR	m17.csc.dmu.test.
-253.47.17	IN	PTR	gwY.csc.dmu.test.
-254.47.17	IN	PTR	gwZ.csc.dmu.test.
-
+253.47.17	IN	PTR	gwy.csc.dmu.test.
+254.47.17	IN	PTR	gwz.csc.dmu.test.

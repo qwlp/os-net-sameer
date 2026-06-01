@@ -20,17 +20,14 @@ $TTL    8h
 ; nameserver(s)
 ;
 @	IN	NS	dns1.csc.dmu.test.
-	IN	NS	dns2.csc.dmu.test.
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; Host pointers to canonical name
 
 ; D network (10.227.0.0/16)
-55	IN	PTR	gwW.csc.dmu.test.
-56	IN	PTR	gwX.csc.dmu.test.
-58	IN	PTR	gwZ.csc.dmu.test.
+55	IN	PTR	gww.csc.dmu.test.
+56	IN	PTR	gwx.csc.dmu.test.
+58	IN	PTR	gwz.csc.dmu.test.
 
 220	IN	PTR	dns1.csc.dmu.test.
-221	IN	PTR	dns2.csc.dmu.test.
 254	IN	PTR	gw.csc.dmu.test.
-
