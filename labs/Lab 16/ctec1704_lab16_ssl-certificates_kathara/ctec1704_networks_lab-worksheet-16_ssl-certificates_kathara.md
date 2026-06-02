@@ -32,7 +32,7 @@ Make sure you have completed all the steps in this worksheet before the next lab
 
 1. You have completed all the work in previous lab sheets.
 
-- You have used `kathara lstart` to launch a coordinated group of several virtual machines. Specifically, you are aware of how this group is coordinated via the `lab.conf` and `lab.dep` files.
+- You have used `kathara lstart` to launch a coordinated group of several virtual machines. Specifically, you are aware of how this group is coordinated via the `lab.conf` file, and via `lab.dep` when a lab needs explicit startup dependencies.
 - You know how to shut down virtual machines using `kathara lclean`.
 - You have used `ip` and `ping` within the virtual machines.
 - You have saved captured network traffic from a virtual machine using `tcpdump`.
@@ -63,8 +63,11 @@ kathara lstart
 
 5. Use `tcpdump` to capture an HTTP/TCP conversation in the `ssl_server` VM for later analysis and comparison. Use the text-only browser application called `lynx` in the `ssl_client` VM to generate the network traffic. Close the capture when complete.
 
+Save packet captures in the Kathara shared folder so that they are available from the real Linux host after the capture has finished.
+
 ```sh
-tcpdump -i eth0 -v -s0 -w /hosthome/ctec1704/captures/http2.pcap
+mkdir -p /shared/captures
+tcpdump -i eth0 -v -s0 -w /shared/captures/http2.pcap
 ```
 
 ## Self-signed SSL certificates
@@ -315,7 +318,7 @@ See <https://hackertarget.com/nmap-tutorial>.
 
 ## Challenge
 
-34. All the configuration changes you have made are stored in the VM's writable filesystem layer. When you clean the lab with `kathara lclean`, you will lose your settings and progress. Therefore, save your work by copying the edited files into the relevant directories in the `ssl_server` directory in the host system. The `/hostlab` directory will help here. Then, when you restart the lab, all your changes should be copied into the `ssl_server` VM.
+34. All the configuration changes you have made are stored in the VM's writable filesystem layer. When you clean the lab with `kathara lclean`, you will lose your settings and progress. Therefore, save your work by copying the edited files into the relevant directories in the `ssl_server` directory in the host system. The `/shared` directory can help you move files from the VM back to the host. Then, when you restart the lab, all your changes should be copied into the `ssl_server` VM.
 
 Test your new configuration to ensure that the certificate and other configuration files have been correctly installed.
 
