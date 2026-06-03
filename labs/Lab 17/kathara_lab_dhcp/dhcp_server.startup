@@ -1,0 +1,11 @@
+ip addr add 172.16.12.253/24 dev eth0
+
+ip link set dev eth0 up
+
+mkdir -p /var/lib/dhcp /run
+touch /var/lib/dhcp/dhcpd.leases
+
+if command -v dhcpd >/dev/null 2>&1; then
+    dhcpd -t -cf /etc/dhcp/dhcpd.conf
+    dhcpd -4 -cf /etc/dhcp/dhcpd.conf -lf /var/lib/dhcp/dhcpd.leases eth0
+fi

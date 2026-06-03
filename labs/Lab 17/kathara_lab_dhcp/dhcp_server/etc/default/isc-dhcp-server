@@ -1,0 +1,5 @@
+# isc-dhcp-server
+# Server interface configuration.
+
+INTERFACESv4="eth0"
+INTERFACESv6=""
