@@ -1,0 +1,56 @@
+= Operating Systems
+
+- IEEE 754
+- 2's complement
+- 2's complement addition
+- Add/Sub in Bin
+- Floating Point IEEE
+- Conversion (Number System)
+- Moore's Law
+- Digital Circuit
+- MUX, DeMUX, Flip flops
+- MIPS
+- Clock Rate
+- Registers
+- CPU Registers
+- Linux Commands (rmdir, mkdir, chmod, cat, vi, tree, top, grep, cd, xclock)
+- Instructions (IF, ID, EX, MEM, WB)
+- RISC/CISC
+- Process (Child, Parents), fork()
+- Hardware Interrupt
+- Memory - Cache, Registers
+- SRAM, DRAM
+- NAND, NOR
+- Logic Gates
+- Universal Gates
+- Open Source OSes
+- Kernel
+- Monolithic / Microkernel Structures
+- Syscalls
+- PCB (Process Control Block) - Sections of the PCB
+- Data Section, Text Section, Heap, Stack
+- Bash (/bin/bash)
+- Virtual Memory
+- Finite State Automata & Intro to Encryption
+
+= Networking
+
+- HTTP status codes
+- Acronyms:
+  - TLD, SSH, TLS, SSL, CRC, CSMA, DHCP, DNS, RFC
+- Netkit
+- Linux Commands
+- Protocols
+- TCP/IP - 5 layers (Application, Transport, Network, Link, Physical)
+- FTP
+- Segments / Datagram / Frames – for each layer
+- SSL – which layer, uses
+- Physical media – Wired, Wireless
+- ARP
+- IP addressing / Subnet masking
+- TCP / UDP
+- Telnet
+- HTTP Security
+- Socket
+- Client/server - asynchronous
+- IP Suite

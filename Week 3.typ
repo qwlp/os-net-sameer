@@ -1,3 +1,6 @@
+#import "prelude.typ": *;
+#show: styling
+
 = OS
 
 == Definition
@@ -119,3 +122,223 @@ OSTEP defines it in three steps which are:
     kernel).
 
 - We are doing Linux afterwords, woohoo!
+
+=== Open Source OSes
+
+- An open source OS makes its source code available for inspection,
+  modification, and redistribution under an open source licence.
+- Examples include:
+  + Linux distributions such as Ubuntu, Debian, Fedora, and Arch.
+  + FreeBSD, OpenBSD, and NetBSD.
+  + MINIX.
+- Open source matters because users and organizations can audit code, adapt it
+  to their needs, and contribute fixes upstream.
+
+=== System Calls
+
+- A system call is the controlled entry point from a user program into the
+  kernel.
+- User programs cannot directly perform privileged operations such as raw disk
+  access, process creation, or direct device control.
+- Instead, they request kernel services through syscalls.
+- Examples:
+  + `read()` and `write()` for file or device I/O.
+  + `open()` and `close()` for files.
+  + `fork()`, `exec()`, `wait()`, and `exit()` for process control.
+  + `chmod()` and `chown()` for permission and ownership changes.
+- Syscalls are normally wrapped by libraries, so programmers often call library
+  functions rather than invoking the trap instruction directly.
+
+== Linux Permissions
+
+- File owners should be able to control what can be done to a file and who can
+  do it.
+- Linux records access rights for three classes:
+  + *Owner*: the user who owns the file.
+  + *Group*: users in the file's group.
+  + *World/other*: everyone else.
+- The three basic permissions are:
+  + `r` read: view file contents or list directory names.
+  + `w` write: modify a file or create/delete entries in a directory.
+  + `x` execute: run a file or enter/search a directory.
+- Example from `ls -l`:
+
+```text
+-rw-r--r-- 1 ali staff 4.9K 6 Oct 11:44 archive-file.zip
+drwxr-xr-x 46 ali staff 1.5K 8 Oct 14:28 architecture
+-rwxr-xr-x 1 ali staff 71K 26 Oct 18:57 schedule.ods
+```
+
+- The first character shows file type:
+  + `-` normal file.
+  + `d` directory.
+- The next nine characters are permissions in groups of three:
+  + owner, group, other.
+- Numeric permission values:
+  + read = `4`
+  + write = `2`
+  + execute = `1`
+- Add the values for each class:
+  + `7` = `rwx`
+  + `6` = `rw-`
+  + `5` = `r-x`
+  + `4` = `r--`
+  + `0` = `---`
+- Example: `chmod 761 game` means:
+  + owner = `7` = `rwx`
+  + group = `6` = `rw-`
+  + other = `1` = `--x`
+- Symbolic forms can be clearer:
+
+```sh
+chmod u+rwx game
+chmod g+rw game
+chmod o+x game
+chgrp groupname filename
+usermod -a -G groupname username
+```
+
+=== Common Linux Commands
+
+#table(
+  columns: (auto, 1fr),
+  inset: 8pt,
+  table.header([*Command*], [*Use*]),
+  [`cd`], [Change directory.],
+  [`mkdir`], [Create a directory.],
+  [`rmdir`], [Remove an empty directory.],
+  [`cat`], [Print or concatenate file contents.],
+  [`vi`], [Open the `vi` text editor.],
+  [`tree`], [Display a directory tree.],
+  [`top`], [Show running processes and resource usage.],
+  [`grep`], [Search text for matching lines.],
+  [`chmod`], [Change file or directory permissions.],
+  [`xclock`], [Open a simple X11 clock application, useful for testing GUI forwarding.],
+)
+
+=== Bash
+
+- Bash is a common Unix/Linux shell, usually located at `/bin/bash`.
+- A shell reads commands, starts programs, expands variables, redirects input
+  and output, and runs scripts.
+- Common Bash features:
+  + pipes, such as `cat file.txt | grep error`.
+  + redirection, such as `command > output.txt`.
+  + environment variables, such as `$PATH`.
+  + scripts starting with a shebang like `#!/bin/bash`.
+
+== Processes
+
+- A *program* is a passive file stored on disk.
+- A *process* is a program in execution.
+- A program becomes a process when the executable is loaded into memory.
+- One program can have many processes, such as several users running the same
+  command at the same time.
+- A process needs resources:
+  + CPU time.
+  + memory.
+  + files.
+  + I/O devices.
+  + initialization data.
+- The OS is responsible for creating, deleting, suspending, resuming, and
+  scheduling processes.
+
+=== Parts of a Process in Memory
+
+- *Text section*: program code/instructions.
+- *Data section*: global and static variables.
+- *Heap*: dynamically allocated memory during runtime.
+- *Stack*: function parameters, return addresses, and local variables.
+- *Program counter*: address of the next instruction to execute.
+- *Registers*: CPU state used by the running process.
+
+The stack usually grows downward and the heap usually grows upward. The unused
+space between them can remain unmapped until needed.
+
+=== Process States
+
+- `new`: process is being created.
+- `ready`: process is waiting to be assigned to a CPU.
+- `running`: instructions are currently executing.
+- `waiting`: process is blocked waiting for an event, I/O, or resource.
+- `terminated`: process has finished.
+
+Typical transitions:
+- `new -> ready`: process is admitted by the OS.
+- `ready -> running`: scheduler dispatches the process.
+- `running -> ready`: CPU is preempted or time slice expires.
+- `running -> waiting`: process requests I/O or waits for an event.
+- `waiting -> ready`: event completes.
+- `running -> terminated`: process exits.
+
+=== Process Control Block
+
+- The PCB, also called a task control block, stores the OS's record of a
+  process.
+- It includes:
+  + process state.
+  + process ID.
+  + program counter.
+  + CPU registers.
+  + scheduling information and priority.
+  + memory-management information.
+  + accounting information such as CPU time used.
+  + I/O status and open files.
+- During a context switch, the OS saves the old process state into its PCB and
+  loads the next process state from its PCB.
+- Context switching is overhead because the CPU is not doing useful application
+  work during the switch.
+- In Linux, process information can be inspected under `/proc/<pid>/`, such as:
+  + `/proc/<pid>/status`
+  + `/proc/<pid>/sched`
+  + `/proc/<pid>/maps`
+  + `/proc/<pid>/stack`
+
+=== Process Creation and Termination
+
+- Processes form a tree:
+  + A parent process creates child processes.
+  + Children can create more children.
+  + Each process is managed using a PID.
+- Common Unix/Linux system calls:
+  + `fork()` creates a child process that is initially a copy of the parent.
+  + `exec()` replaces the process memory image with a new program.
+  + `wait()` lets a parent wait for a child to finish and collect its status.
+  + `exit()` terminates the current process.
+- A *zombie* process has terminated, but its parent has not yet collected its
+  exit status with `wait()`.
+- An *orphan* process continues running after its parent has terminated.
+
+== Virtual Memory
+
+- Processes use *logical* or *virtual* addresses generated by the CPU.
+- RAM uses *physical* addresses.
+- The memory-management unit (MMU) maps virtual addresses to physical
+  addresses at runtime.
+- This separation is important because:
+  + each process can have its own private address space.
+  + a process does not need to know where it is stored in physical RAM.
+  + the OS can protect processes from accessing each other's memory.
+  + programs can be larger than physical memory.
+
+=== Swapping
+
+- Swapping temporarily moves a process or parts of a process out of RAM to a
+  backing store on disk, then brings it back when needed.
+- This allows the total memory used by processes to exceed physical RAM.
+- Swap time is mostly transfer time, so swapping large processes can make
+  context switching extremely slow.
+- Example: swapping out 100 MB at 50 MB/s takes about 2 seconds; swapping in
+  another 100 MB takes another 2 seconds.
+
+=== Benefits of Virtual Memory
+
+- Only the needed parts of a program have to be in memory.
+- More programs can run concurrently.
+- Less I/O is needed when loading or swapping programs.
+- Address spaces can contain holes for stack/heap growth.
+- Shared libraries can be mapped into multiple processes.
+- Shared memory can be implemented by mapping the same physical pages into more
+  than one process.
+- `fork()` can be faster because pages can initially be shared and copied only
+  when modified.

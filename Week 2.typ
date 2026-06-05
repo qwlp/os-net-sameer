@@ -119,6 +119,25 @@ The CPU consists of three main components:
 - Buses
 - Clock
 
+=== Clock Rate and Registers
+
+- The CPU clock coordinates when operations happen inside the processor.
+- Clock rate is usually measured in hertz, such as MHz or GHz.
+- A higher clock rate means more clock cycles per second, but performance also
+  depends on instruction design, pipelining, cache, memory speed, and number of
+  cores.
+- A *register* is a very small, very fast storage location inside the CPU.
+- CPU registers are used for:
+  + operands for arithmetic and logic.
+  + addresses for memory access.
+  + temporary results.
+  + control information such as the program counter.
+- Important register examples:
+  + *Program counter*: address of the next instruction.
+  + *Instruction register*: currently fetched instruction.
+  + *General-purpose registers*: hold values used by programs.
+  + *Stack pointer*: tracks the current top of the stack.
+
 == Logic Gates
 
 Computer are built of tiny switches (that can turn on (1) and off (0)) called
@@ -138,6 +157,23 @@ happened in the past. To do this, they use Flip-Flops, which act as a 1 bit
 cell.
 
 To watch: https://www.youtube.com/watch?v=Hi7rK0hZnfc
+
+=== MUX, DeMUX, and Flip-Flops
+
+- A *multiplexer* or MUX selects one of many inputs and forwards it to one
+  output.
+- A MUX is controlled by select lines.
+- Example: a `4-to-1` MUX has four inputs, one output, and select bits that
+  choose which input is passed through.
+- A *demultiplexer* or DeMUX does the reverse: it takes one input and routes it
+  to one of many outputs.
+- MUX and DeMUX circuits are useful in CPUs because hardware often needs to
+  choose between several possible data sources or destinations.
+- A *flip-flop* stores one bit of state.
+- Flip-flops are the building blocks for registers, counters, and memory cells.
+- Difference:
+  + combinational logic depends only on current inputs.
+  + sequential logic depends on current inputs and stored state.
 
 == Memory
 

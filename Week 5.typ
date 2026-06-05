@@ -235,6 +235,7 @@ are usually written as four decimal numbers separated by dots, like
 - A bigger prefix number means a smaller network:
   - `/24` = 256 addresses total, 254 usable
   - `/16` = much larger network
+  - Formula is $2^h - 2$, h is taking 32 from the network part.
 - Subnet masking is the process of separating the network part from the host
   part of an IP address.
 - Routers use the mask to know whether a packet stays local or gets forwarded.
@@ -344,9 +345,252 @@ are usually written as four decimal numbers separated by dots, like
   - `BGP`: best policy between networks.
 
 - Main difference:
-  - `RIP` and `OSPF` are mostly for routing **inside** one organization.
-  - `BGP` is for routing **between** different organizations and networks.
+  - `RIP` and `OSPF` are mostly for routing *inside* one organization.
+  - `BGP` is for routing *between* different organizations and networks.
 
 
 == Link Layer
 
+- The link layer moves frames between neighboring nodes on the same link.
+- It is responsible for local delivery, not end-to-end internet delivery.
+- Examples:
+  + Ethernet.
+  + Wi-Fi.
+  + Point-to-point links.
+  + Switches
+- Important link-layer concepts:
+  + *Frame*: link-layer data unit.
+  + *MAC address*: hardware/link-layer address, such as `00:1a:a0:b4:4b:c1`.
+  + *Network adapter/NIC*: hardware that sends and receives frames.
+  + *Error detection*: checking whether a frame was corrupted.
+
+=== CSMA
+
+- CSMA means Carrier Sense Multiple Access.
+- It is a media-access idea used when multiple devices share the same
+  transmission medium.
+- A device listens before transmitting:
+  + If the medium is idle, it may transmit.
+  + If the medium is busy, it waits.
+- Ethernet historically used CSMA/CD, where `CD` means collision detection.
+- Wi-Fi uses CSMA/CA, where `CA` means collision avoidance, because wireless
+  devices cannot reliably detect collisions in the same way as wired Ethernet.
+
+=== ARP
+
+- ARP maps an IPv4 address to a MAC address on the local network.
+- A host uses ARP when it knows the destination IP but needs the destination MAC
+  address for the Ethernet or Wi-Fi frame.
+- Basic ARP flow:
+  + Host broadcasts: "Who has this IP address?"
+  + The matching host replies with its MAC address.
+  + The sender stores the result in its ARP cache/table.
+- ARP is local to a subnet. Routers do not forward ARP broadcasts across normal
+  routed networks.
+
+=== Ethernet and Switching
+
+- Ethernet frames contain source and destination MAC addresses.
+- A switch learns which MAC addresses are reachable on which ports by observing
+  incoming frames.
+- If the switch knows the destination MAC, it forwards the frame only out the
+  correct port.
+- If it does not know the destination MAC, it floods the frame out other ports.
+- Switches operate mainly at layer 2, while routers operate at layer 3.
+
+=== CRC and Error Detection
+
+- CRC means cyclic redundancy check.
+- The sender computes a check value from the frame bits and includes it with the
+  frame.
+- The receiver recomputes the check value.
+- If the values do not match, the receiver treats the frame as corrupted.
+- CRC detects many common transmission errors, but it is not encryption and does
+  not prove authenticity.
+
+== File Transfer and Remote Access
+
+=== Netkit and Kathara
+
+- Netkit is a network emulation tool used in older networking labs.
+- It lets students run multiple virtual Linux machines connected by virtual
+  links, so routing, addressing, and packet capture can be practised safely.
+- This repo also contains Kathara lab material. Kathara is a more modern
+  Docker-based replacement for many Netkit-style labs.
+- Typical lab workflow:
+  + inspect the topology files.
+  + start the lab.
+  + run commands such as `ip`, `ping`, `tcpdump`, and `route`.
+  + inspect packets in Wireshark.
+  + stop and clean the lab.
+- These labs help connect theory to real protocol behaviour.
+
+=== FTP
+
+- FTP means File Transfer Protocol.
+- It shares files and directories between remote systems using a client-server
+  model.
+- FTP uses TCP and traditionally uses two connections:
+  + port `21` for commands/control.
+  + port `20` or a negotiated port for data.
+- FTP can use different representations:
+  + ASCII mode for text.
+  + Image/binary mode for byte-for-byte transfer.
+  + EBCDIC mode for IBM text.
+  + Local mode for compatible systems using a local format.
+- Data transfer modes include:
+  + stream mode.
+  + block mode.
+  + compressed mode.
+
+=== Active and Passive FTP
+
+- In active mode, the client opens the control connection and the server opens a
+  data connection back to the client.
+- Active mode often fails through NAT or firewalls because the client may not
+  accept incoming connections from the internet.
+- In passive mode, the client asks the server for a data port and then the
+  client opens the data connection.
+- Passive mode is commonly used when clients are behind NAT or firewalls.
+
+=== FTP Security
+
+- Plain FTP can expose usernames, passwords, commands, and file contents.
+- Common risks include:
+  + brute-force login attempts.
+  + packet sniffing.
+  + spoofing.
+  + bounce attacks.
+  + port stealing.
+- Secure alternatives:
+  + *FTPS*: FTP extended with SSL/TLS.
+  + *SFTP*: SSH File Transfer Protocol. It is not the same protocol as FTP.
+  + *SCP*: secure copy over SSH.
+  + `rsync` over SSH for efficient synchronization.
+
+=== SSH
+
+- SSH means Secure Shell.
+- It is a cryptographic protocol for secure remote login, remote command
+  execution, tunneling, and file transfer.
+- Default port: `22`.
+- Common commands:
+
+```sh
+ssh user@host
+ssh -p 2222 user@host
+sftp -P 2222 user@host
+scp file.txt user@host:/path/
+```
+
+- SSH uses cryptography to authenticate the server and encrypt the session.
+- Users may authenticate with passwords or public/private key pairs.
+
+== Web Security and TLS
+
+- HTTPS is HTTP carried over TLS.
+- TLS provides:
+  + confidentiality through encryption.
+  + integrity protection against undetected modification.
+  + server authentication using certificates.
+- SSL is the older predecessor to TLS and is now considered deprecated.
+
+=== Certificates and Certificate Authorities
+
+- A certificate binds a public key to a domain name or identity.
+- A certificate authority (CA) signs certificates so clients can decide whether
+  to trust a server.
+- Browsers and operating systems include trusted CA root certificates.
+- If a server presents a valid certificate for the requested domain, the browser
+  can verify that it is talking to the expected server.
+
+=== TLS Handshake
+
+- A simplified TLS handshake:
+  + Client offers supported TLS versions and cipher suites.
+  + Server chooses protocol parameters.
+  + Server sends its certificate.
+  + Client verifies the certificate.
+  + Client and server establish shared session keys.
+  + Later HTTP data is encrypted using fast symmetric encryption.
+- Public-key cryptography is mainly used during setup and authentication.
+- Symmetric encryption is used for the main data transfer because it is faster.
+
+== DHCP and the DORA Cycle
+
+- DHCP means Dynamic Host Configuration Protocol.
+- It automatically gives hosts network settings such as:
+  + IP address.
+  + subnet mask.
+  + default gateway.
+  + DNS server.
+  + lease time.
+- DHCP uses UDP and is connectionless.
+- DORA cycle:
+  + *Discover*: client broadcasts to find DHCP servers.
+  + *Offer*: server offers an available address and settings.
+  + *Request*: client requests one offered address.
+  + *Acknowledge*: server confirms the lease.
+- Clients often broadcast because they do not yet have a valid IP address.
+- DHCP relay is used when clients and DHCP servers are on different subnets.
+- A client may use ARP to check whether an offered address is already in use.
+
+== DNS
+
+- DNS means Domain Name System.
+- It translates human-readable names into IP addresses, such as resolving a web
+  domain to an IPv4 or IPv6 address.
+- DNS is hierarchical:
+  + root servers.
+  + top-level domain servers, such as `.com`, `.org`, or country-code TLDs.
+  + authoritative name servers for specific domains.
+  + recursive resolvers used by clients.
+- Common DNS record types:
+  + `A`: name to IPv4 address.
+  + `AAAA`: name to IPv6 address.
+  + `CNAME`: alias to another name.
+  + `MX`: mail exchanger for email delivery.
+  + `NS`: authoritative name server.
+  + `TXT`: text records, often used for verification and email security.
+- DNS responses are cached for their TTL, which reduces load and improves
+  performance.
+
+=== Recursive Lookup
+
+- A typical DNS lookup:
+  + The client asks a recursive resolver.
+  + The resolver asks a root server where to find the TLD server.
+  + The resolver asks the TLD server where to find the domain's authoritative
+    server.
+  + The resolver asks the authoritative server for the record.
+  + The resolver returns the answer to the client and caches it.
+
+=== DNS Security Issues
+
+- Traditional DNS responses are not encrypted and were not designed with strong
+  authentication.
+- DNS cache poisoning tries to insert false records into a resolver cache.
+- Attackers may use misleading domains for phishing.
+- DNSSEC adds signatures to DNS data so resolvers can validate authenticity and
+  integrity, but it does not encrypt the query.
+
+== Quick Acronyms
+
+#table(
+  columns: (auto, 1fr),
+  inset: 8pt,
+  table.header([*Acronym*], [*Meaning*]),
+  [`ARP`], [Address Resolution Protocol],
+  [`CSMA`], [Carrier Sense Multiple Access],
+  [`CRC`], [Cyclic Redundancy Check],
+  [`DHCP`], [Dynamic Host Configuration Protocol],
+  [`DNS`], [Domain Name System],
+  [`DORA`], [Discover, Offer, Request, Acknowledge],
+  [`FTP`], [File Transfer Protocol],
+  [`RFC`], [Request for Comments],
+  [`SFTP`], [SSH File Transfer Protocol],
+  [`SSH`], [Secure Shell],
+  [`SSL`], [Secure Sockets Layer, older predecessor to TLS],
+  [`TLS`], [Transport Layer Security],
+  [`TLD`], [Top-Level Domain],
+)

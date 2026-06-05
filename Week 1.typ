@@ -45,6 +45,59 @@ The "leftmost bit" will be what the sign is.
   + Pos + Pos = Neg
   + Neg + Neg = Pos
 
+== Binary Addition and Subtraction
+
+- Binary addition uses the same column method as decimal addition, but the base
+  is `2`.
+- Rules:
+  + `0 + 0 = 0`
+  + `0 + 1 = 1`
+  + `1 + 0 = 1`
+  + `1 + 1 = 10`, write `0` and carry `1`
+  + `1 + 1 + 1 = 11`, write `1` and carry `1`
+
+Example:
+
+```text
+  0101
++ 0011
+= 1000
+```
+
+- For subtraction, computers usually avoid a separate subtraction circuit and
+  use two's complement addition instead.
+- To calculate `A - B`, compute `A + (-B)`.
+- Example using 8 bits: `7 - 3`
+  + `7 = 00000111`
+  + `3 = 00000011`
+  + `-3` in two's complement:
+    - flip bits: `11111100`
+    - add 1: `11111101`
+  + add:
+
+```text
+  00000111
++ 11111101
+= 00000100
+```
+
+- The final carry out is ignored in fixed-width two's complement arithmetic.
+- Result: `00000100 = 4`.
+
+== Two's Complement Addition
+
+- Two's complement lets the same binary adder handle positive and negative
+  integers.
+- If the leftmost bit is `0`, the number is non-negative.
+- If the leftmost bit is `1`, the number is negative.
+- Addition steps:
+  + Add the bit patterns normally.
+  + Keep only the fixed number of bits.
+  + Check overflow only when adding two numbers with the same sign.
+- Overflow occurs when:
+  + positive + positive gives a negative result.
+  + negative + negative gives a positive result.
+
 = Floating Points
 
 Let's say you want to convert $13.25$ to a 32-bit floating point IEEE 754
@@ -110,3 +163,88 @@ decimal.
 - An abstract machine that can be in exactly one of a finite number of states at
   any given time. A state simply describes the status of a system at a
   particular moment.
+
+- FSMs are useful when a system has a fixed set of possible situations and the
+  next situation depends on an input event.
+- Important terms:
+  + *State*: the current condition of the system.
+  + *Transition*: movement from one state to another.
+  + *Event/input*: the thing that triggers a transition.
+  + *Action/output*: work done when entering a state, leaving a state, or taking
+    a transition.
+  + *Initial state*: where the machine starts.
+  + *Accepting/final state*: a state that means the input has been successfully
+    recognized.
+- In a state diagram:
+  + Circles represent states.
+  + Arrows represent transitions.
+  + Arrow labels show the input/event that causes the transition.
+- Example: a simple coffee machine can be modelled as states such as `idle`,
+  `coin inserted`, `drink selected`, `dispensing`, and `finished`.
+  + In `idle`, inserting money moves to `coin inserted`.
+  + Pressing a drink button moves to `drink selected`.
+  + The machine dispenses coffee, then returns to `idle`.
+- FSMs are common in protocol design, traffic lights, vending machines, parsers,
+  games, embedded systems, and UI workflows.
+
+== Encryption and Cryptography
+
+- *Plaintext* is readable data before encryption.
+- *Ciphertext* is the scrambled data after encryption.
+- *Encryption* converts plaintext into ciphertext using an algorithm and a key.
+- *Decryption* converts ciphertext back into plaintext using the correct key.
+- The main goal of encryption is *confidentiality*: unauthorized people should
+  not be able to understand the message.
+- Encryption also supports:
+  + *Integrity*: detecting whether data has been changed.
+  + *Authentication*: proving who sent or owns something.
+  + *Non-repudiation*: making it difficult for a sender to deny an action.
+
+=== Why Encryption Matters
+
+Attackers may try to:
+- Eavesdrop: read messages while they are being transmitted.
+- Insert or modify messages: actively interfere with a connection.
+- Impersonate: spoof a source address, account, or server.
+- Hijack: take over an existing session.
+- Deny service: overload a system so legitimate users cannot access it.
+
+Encryption does not solve every security problem by itself, but it makes stolen
+traffic much less useful and is a core part of secure network protocols.
+
+=== Symmetric Encryption
+
+- Symmetric-key cryptography uses the same secret key for encryption and
+  decryption.
+- If Alice and Bob share key `K_s`, Alice encrypts with `K_s` and Bob decrypts
+  with `K_s`.
+- The challenge is key exchange: both parties need the same key without leaking
+  it to attackers.
+- Examples:
+  + Simple substitution cipher: replaces each letter with another letter.
+  + AES: modern symmetric standard that works on 128-bit blocks and supports
+    128, 192, or 256-bit keys.
+- Symmetric encryption is fast and is normally used to encrypt bulk data.
+
+=== Public Key Encryption
+
+- Public-key cryptography uses two related keys:
+  + Public key: shared with everyone.
+  + Private key: kept secret by the owner.
+- A message encrypted with a public key can only be decrypted with the matching
+  private key.
+- This avoids the need to share a secret key in advance.
+- RSA is a well-known public-key algorithm.
+- Public-key encryption is slower than symmetric encryption, so real systems
+  often use it to securely agree on a temporary symmetric session key.
+
+=== Digital Signatures and Message Digests
+
+- A *message digest* or hash is a fixed-size fingerprint of data.
+- Good hash functions are one-way: it should be infeasible to rebuild the
+  original message from the digest.
+- If the message changes, the digest should change.
+- A *digital signature* is created by signing a digest with a private key.
+- Anyone with the matching public key can verify that:
+  + The signer controlled the private key.
+  + The signed data has not changed since it was signed.
